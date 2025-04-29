@@ -26,7 +26,7 @@ function Header() {
               alt="Заєць" 
               className="site-logo rounded-circle me-2"
             />
-            <span className="fs-4">Сайт про зайців</span>
+            <span className="fs-4">Сайт про рисів</span>
           </Link>
         </div>
 

@@ -1,14 +1,14 @@
 /* Змінні кольорів та значень */
 :root {
-  --color-primary: #28a745;
-  --color-primary-dark: #155724;
-  --color-bg-light: #d4edda;
+  --color-primary: #166ed3;
+  --color-primary-dark: #0c48b6;
+  --color-bg-light: #e0daec;
   --color-bg-medium: #c3e6cb;
-  --color-bg-hover: #b1dfbb;
+  --color-bg-hover: #e6cb;
   --spacing-base: 1rem;
   --header-height: 60px;
   --transition-base: 0.2s ease;
-  --shadow-base: 0 4px 8px rgba(40, 167, 69, 0.2);
+  --shadow-base: 0 4px 8px rgba(6, 142, 196, 0.2);
 }
 
 /* Базові стилі */
