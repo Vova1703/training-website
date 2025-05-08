@@ -8,31 +8,11 @@ import Photo from '../pages/Photo';
 const SearchContext = createContext();
 
 const PAGES = [
-  {
-    path: '/',
-    title: 'Головна',
-    component: Home
-  },
-  {
-    path: '/morphology',
-    title: 'Зовнішній вигляд рисів',
-    component: Morphology
-  },
-  {
-    path: '/nutrition',
-    title: 'Харчування рисів',
-    component: Nutrition
-  },
-  {
-    path: '/population',
-    title: 'Ареал рисів',
-    component: Population
-  },
-  {
-    path: '/photo',
-    title: 'Фотографії рисів',
-    component: Photo
-  }
+  { path: '/', title: 'Головна', component: Home },
+  { path: '/morphology', title: 'Зовнішній вигляд рисів', component: Morphology },
+  { path: '/nutrition', title: 'Харчування рисів', component: Nutrition },
+  { path: '/population', title: 'Ареал рисів', component: Population },
+  { path: '/photo', title: 'Фотографії рисів', component: Photo },
 ];
 
 export function SearchProvider({ children }) {
@@ -42,24 +22,16 @@ export function SearchProvider({ children }) {
   const extractTextContent = (element) => {
     if (!element) return '';
     if (typeof element === 'string') return element;
-    if (Array.isArray(element)) {
-      return element.map(extractTextContent).join(' ');
-    }
-    if (typeof element === 'object') {
-      if (element.props) {
-        if (element.props.children) {
-          return extractTextContent(element.props.children);
-        }
-        return '';
-      }
-      return '';
+    if (Array.isArray(element)) return element.map(extractTextContent).join(' ');
+    if (typeof element === 'object' && element.props?.children) {
+      return extractTextContent(element.props.children);
     }
     return '';
   };
 
   const getPageContent = (Component) => {
     try {
-      const rendered = Component();
+      const rendered = <Component />;
       return extractTextContent(rendered);
     } catch (e) {
       console.error('Error extracting content from component:', e);
@@ -67,7 +39,7 @@ export function SearchProvider({ children }) {
     }
   };
 
-  const handleSearch = async (term) => {
+  const handleSearch = (term) => {
     if (!term.trim()) {
       setSearchResults([]);
       setSearchTerm('');
@@ -76,14 +48,14 @@ export function SearchProvider({ children }) {
 
     setSearchTerm(term);
 
-    const results = PAGES.filter(page => {
+    const results = PAGES.filter((page) => {
       const searchTermLower = term.toLowerCase();
       const pageContent = getPageContent(page.component);
       return (
         page.title.toLowerCase().includes(searchTermLower) ||
         pageContent.toLowerCase().includes(searchTermLower)
       );
-    }).map(page => ({
+    }).map((page) => ({
       title: page.title,
       path: page.path,
       excerpt: getPageContent(page.component).substring(0, 150) + '...',
@@ -100,11 +72,7 @@ export function SearchProvider({ children }) {
     handleSearch,
   };
 
-  return (
-    <SearchContext.Provider value={value}>
-      {children}
-    </SearchContext.Provider>
-  );
+  return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
 }
 
 export function useSearch() {
