@@ -4,13 +4,13 @@ import { RabbitRepository } from '../repositories/RabbitRepository';
 
 // Створюємо новий обробник HTTP-запитів Express
 const router = Router();
-// Отримуємо екземпляр репозиторію зайців з контейнера інверсії залежностей
+// Отримуємо екземпляр репозиторію рисей з контейнера інверсії залежностей
 const rabbitRepository = container.get(RabbitRepository);
 
-// Обробка HTTP-запиту GET / - отримання всіх записів зайців
+// Обробка HTTP-запиту GET / - отримання всіх записів рисей
 router.get('/', (async (_req: Request, res: Response) => {
     try {
-        // Отримуємо всі записи зайців з бази даних через репозиторій
+        // Отримуємо всі записи рисей з бази даних через репозиторій
         const rabbits = await rabbitRepository.findAll();
         res.json(rabbits);
     } catch (error) {
@@ -20,16 +20,16 @@ router.get('/', (async (_req: Request, res: Response) => {
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту GET /:id - отримання запису одного зайця за ідентифікатором
+// Обробка HTTP-запиту GET /:id - отримання запису однієї рисі за ідентифікатором
 router.get('/:id', (async (req: Request, res: Response) => {
     try {
-        // Пошук зайця за ідентифікатором
+        // Пошук рисі за ідентифікатором
         const rabbit = await rabbitRepository.findById(req.params.id);
         if (rabbit) {
             res.json(rabbit);
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            res.status(404).json({ message: 'Запис зайця не знайдено' });
+            // Якщо рись не знайдена, повертаємо 404 помилку
+            res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
         // Обробка помилки
@@ -38,12 +38,12 @@ router.get('/:id', (async (req: Request, res: Response) => {
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту POST / - створення нового запису зайця
+// Обробка HTTP-запиту POST / - створення нового запису рисі
 router.post('/', (async (req: Request, res: Response) => {
     try {
-        // Створюємо новий запис зайця з даних запиту
+        // Створюємо новий запис рисі з даних запиту
         const newRabbit = await rabbitRepository.create(req.body);
-        // Повертаємо статус 201 (Created) і дані створеного зайця
+        // Повертаємо статус 201 (Created) і дані створеної рисі
         res.status(201).json(newRabbit);
     } catch (error) {
         // Обробка помилки
@@ -52,7 +52,7 @@ router.post('/', (async (req: Request, res: Response) => {
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту PUT /:id - повне оновлення запису зайця
+// Обробка HTTP-запиту PUT /:id - повне оновлення запису рисі
 router.put('/:id', (async (req: Request, res: Response) => {
     try {
         // Перевірка наявності всіх обов'язкових полів для PUT запиту
@@ -66,13 +66,13 @@ router.put('/:id', (async (req: Request, res: Response) => {
             });
         }
 
-        // Оновлюємо зайця з вказаним ID
+        // Оновлюємо рись з вказаним ID
         const rabbit = await rabbitRepository.update(req.params.id, req.body);
         if (rabbit) {
             return res.json(rabbit);
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            return res.status(404).json({ message: 'Запис зайця не знайдено' });
+            // Якщо рись не знайдена, повертаємо 404 помилку
+            return res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
         // Обробка помилки
@@ -81,16 +81,16 @@ router.put('/:id', (async (req: Request, res: Response) => {
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту PATCH /:id - часткове оновлення запису зайця
+// Обробка HTTP-запиту PATCH /:id - часткове оновлення запису рисі
 router.patch('/:id', (async (req: Request, res: Response) => {
     try {
-        // Часткове оновлення запису зайця - передаються лише ті поля, які потрібно змінити
+        // Часткове оновлення запису рисі - передаються лише ті поля, які потрібно змінити
         const rabbit = await rabbitRepository.patch(req.params.id, req.body);
         if (rabbit) {
             res.json(rabbit);
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            res.status(404).json({ message: 'Запис зайця не знайдено' });
+            // Якщо рись не знайдена, повертаємо 404 помилку
+            res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
         // Обробка помилки
@@ -99,17 +99,17 @@ router.patch('/:id', (async (req: Request, res: Response) => {
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту DELETE /:id - видалення запису зайця
+// Обробка HTTP-запиту DELETE /:id - видалення запису рисі
 router.delete('/:id', (async (req: Request, res: Response) => {
     try {
-        // Видаляємо дані про зайця за ID
+        // Видаляємо дані про рись за ID
         const rabbit = await rabbitRepository.delete(req.params.id);
         if (rabbit) {
             // У разі успіху повертаємо повідомлення про видалення
-            res.json({ message: 'Запис про зайця видалено' });
+            res.json({ message: 'Запис про рись видалено' });
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            res.status(404).json({ message: 'Запис про зайця не знайдено' });
+            // Якщо рись не знайдена, повертаємо 404 помилку
+            res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
         // Обробка помилки

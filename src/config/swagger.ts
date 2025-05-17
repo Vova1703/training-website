@@ -4,9 +4,9 @@ export const swaggerSpec = {
     openapi: '3.0.0',
     // Загальна інформація про API
     info: {
-        title: 'API Сайту про Зайців',
+        title: 'API Сайту про Рисей',
         version: '1.0.0',
-        description: 'Документація API для Сайту про Зайців',
+        description: 'Документація API для Сайту про Рисей',
     },
     // Налаштування серверів для тестування API
     servers: [
@@ -21,12 +21,12 @@ export const swaggerSpec = {
     // Визначення кінцевих точок (endpoints) REST API та операцій з ними
     paths: {
         '/api/rabbits': {
-            // GET запит для отримання всіх зайців
+            // GET запит для отримання всіх рисей
             get: {
-                summary: 'Отримати всіх зайців',
+                summary: 'Отримати всіх рисей',
                 responses: {
                     '200': {
-                        description: 'Список всіх зайців',
+                        description: 'Список всіх рисей',
                         content: {
                             'application/json': {
                                 schema: {
@@ -39,9 +39,9 @@ export const swaggerSpec = {
                 },
             },
 
-            // POST запит для створення нового зайця
+            // POST запит для створення нової рисі
             post: {
-                summary: 'Створити нового зайця',
+                summary: 'Створити нову рись',
                 requestBody: {
                     required: true,
                     content: {
@@ -52,7 +52,7 @@ export const swaggerSpec = {
                 },
                 responses: {
                     '201': {
-                        description: "Створений об'єкт зайця",
+                        description: "Створений об'єкт рисі",
                         content: {
                             'application/json': {
                                 schema: { $ref: '#/components/schemas/Rabbit' },
@@ -63,43 +63,43 @@ export const swaggerSpec = {
             },
         },
 
-        // Операції для конкретного зайця за ID
+        // Операції для конкретної рисі за ID
         '/api/rabbits/{id}': {
-            // GET запит для отримання зайця за ID
+            // GET запит для отримання рисі за ID
             get: {
-                summary: 'Отримати зайця за ID',
+                summary: 'Отримати рись за ID',
                 parameters: [
                     {
                         in: 'path',
                         name: 'id',
                         required: true,
                         schema: { type: 'string' },
-                        description: 'ID зайця',
+                        description: 'ID рисі',
                     },
                 ],
                 responses: {
                     '200': {
-                        description: "Об'єкт зайця",
+                        description: "Об'єкт рисі",
                         content: {
                             'application/json': {
                                 schema: { $ref: '#/components/schemas/Rabbit' },
                             },
                         },
                     },
-                    '404': { description: 'Зайця не знайдено' },
+                    '404': { description: 'Рись не знайдено' },
                 },
             },
 
-            // PUT запит для повного оновлення зайця за ID
+            // PUT запит для повного оновлення рисі за ID
             put: {
-                summary: 'Повністю оновити зайця',
+                summary: 'Повністю оновити рись',
                 parameters: [
                     {
                         in: 'path',
                         name: 'id',
                         required: true,
                         schema: { type: 'string' },
-                        description: 'ID зайця',
+                        description: 'ID рисі',
                     },
                 ],
                 requestBody: {
@@ -112,26 +112,26 @@ export const swaggerSpec = {
                 },
                 responses: {
                     '200': {
-                        description: "Оновлений об'єкт зайця",
+                        description: "Оновлений об'єкт рисі",
                         content: {
                             'application/json': {
                                 schema: { $ref: '#/components/schemas/Rabbit' },
                             },
                         },
                     },
-                    '404': { description: 'Зайця не знайдено' },
+                    '404': { description: 'Рись не знайдено' },
                 },
             },
-            // PATCH запит для часткового оновлення зайця за ID
+            // PATCH запит для часткового оновлення рисі за ID
             patch: {
-                summary: 'Частково оновити зайця',
+                summary: 'Частково оновити рись',
                 parameters: [
                     {
                         in: 'path',
                         name: 'id',
                         required: true,
                         schema: { type: 'string' },
-                        description: 'ID зайця',
+                        description: 'ID рисі',
                     },
                 ],
                 requestBody: {
@@ -144,31 +144,31 @@ export const swaggerSpec = {
                 },
                 responses: {
                     '200': {
-                        description: "Оновлений об'єкт зайця",
+                        description: "Оновлений об'єкт рисі",
                         content: {
                             'application/json': {
                                 schema: { $ref: '#/components/schemas/Rabbit' },
                             },
                         },
                     },
-                    '404': { description: 'Зайця не знайдено' },
+                    '404': { description: 'Рись не знайдено' },
                 },
             },
-            // DELETE запит для видалення даних про зайця за ID
+            // DELETE запит для видалення даних про рись за ID
             delete: {
-                summary: 'Видалити дані про зайця',
+                summary: 'Видалити дані про рись',
                 parameters: [
                     {
                         in: 'path',
                         name: 'id',
                         required: true,
                         schema: { type: 'string' },
-                        description: 'ID зайця',
+                        description: 'ID рисі',
                     },
                 ],
                 responses: {
                     '200': { description: 'Повідомлення про успішне видалення' },
-                    '404': { description: 'Зайця не знайдено' },
+                    '404': { description: 'Рись не знайдено' },
                 },
             },
         },
@@ -178,35 +178,35 @@ export const swaggerSpec = {
     components: {
         // Схеми даних
         schemas: {
-            // Схема об'єкта Заєць
+            // Схема об'єкта Рись
             Rabbit: {
                 type: 'object',
                 required: ['name', 'age', 'height', 'weight', 'gender'],
                 properties: {
                     name: {
                         type: 'string',
-                        description: "Ім'я зайця",
+                        description: "Ім'я рисі",
                     },
                     age: {
                         type: 'number',
-                        description: 'Вік зайця у роках',
+                        description: 'Вік рисі у роках',
                     },
                     height: {
                         type: 'number',
-                        description: 'Висота зайця в сантиметрах',
+                        description: 'Висота рисі в сантиметрах',
                     },
                     weight: {
                         type: 'number',
-                        description: 'Вага зайця в кілограмах',
+                        description: 'Вага рисі в кілограмах',
                     },
                     gender: {
                         type: 'string',
                         enum: ['male', 'female'],
-                        description: 'Стать зайця',
+                        description: 'Стать рисі',
                     },
                     description: {
                         type: 'string',
-                        description: "Опис зайця (необов'язкове поле)",
+                        description: "Опис рисі (необов'язкове поле)",
                     },
                 },
             },

@@ -1,17 +1,17 @@
 import { Schema, model } from 'mongoose';
 
-// Інтерфейс для об'єкта "Заєць"
+// Інтерфейс для об'єкта "Рись"
 interface IRabbit {
-    name: string; // Ім'я зайця
-    age: number; // Вік зайця у роках
-    height: number; // Висота зайця в сантиметрах
-    weight: number; // Вага зайця в кілограмах
-    gender: 'male' | 'female'; // Стать зайця: 'male' - самець, 'female' - самка
-    description?: string; // Опис зайця (необов'язкове поле)
+    name: string; // Ім'я рисі
+    age: number; // Вік рисі у роках
+    height: number; // Висота рисі в сантиметрах
+    weight: number; // Вага рисі в кілограмах
+    gender: 'male' | 'female'; // Стать рисі: 'male' - самець, 'female' - самка
+    description?: string; // Опис рисі (необов'язкове поле)
     dateAdded: Date; // Дата додавання запису до бази даних
 }
 
-// Схема MongoDB для моделі "Заєць"
+// Схема MongoDB для моделі "Рись"
 const rabbitSchema = new Schema<IRabbit>({
     name: {
         type: String,

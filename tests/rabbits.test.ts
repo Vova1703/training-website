@@ -12,8 +12,8 @@ import mongoose from 'mongoose';
 const { expect } = chai;
 chai.use(chaiHttp);
 
-// Тести API вебдодатку сайту про зайців
-describe('API вебдодатку сайту про зайців', () => {
+// Тести API вебдодатку сайту про рисей
+describe('API вебдодатку сайту про рисей', () => {
     // Отримуємо екземпляр бази даних з контейнера
     const database = container.get<IDatabase>(TYPES.IDatabase);
     // Створюємо спеціальний URI для тестової бази даних
@@ -53,25 +53,25 @@ describe('API вебдодатку сайту про зайців', () => {
         });
     });
 
-    // Перед кожним тестом очищуємо колекцію зайців
+    // Перед кожним тестом очищуємо колекцію рисей
     beforeEach(async () => {
         await Rabbit.deleteMany({});
     });
 
-    // Тести для створення запису про нового зайця (POST-запит)
+    // Тести для створення запису про нову рись (POST-запит)
     describe('POST /api/rabbits', () => {
-        it('має створити запис про нового зайця', done => {
-            // Тестові дані зайця
+        it('має створити запис про нову рись', done => {
+            // Тестові дані рисі
             const rabbit = {
                 name: 'Вухань',
                 age: 2,
                 height: 30,
                 weight: 2.5,
                 gender: 'male' as const,
-                description: 'Сірий заєць',
+                description: 'Сіра рись',
             };
 
-            // Виконуємо POST-запит для створення запису про зайця
+            // Виконуємо POST-запит для створення запису про рись
             chai.request(app)
                 .post('/api/rabbits')
                 .send(rabbit)
@@ -94,48 +94,48 @@ describe('API вебдодатку сайту про зайців', () => {
         });
     });
 
-    // Тести для отримання всіх записів зайців (GET-запит)
+    // Тести для отримання всіх записів рисей (GET-запит)
     describe('GET /api/rabbits', () => {
-        it('має отримати всіх зайців', async () => {
-            // Створюємо тестовий запис зайця
+        it('має отримати всіх рисей', async () => {
+            // Створюємо тестовий запис рисі
             const testRabbit = new Rabbit({
                 name: 'Білан',
                 age: 3,
                 height: 35,
                 weight: 3.2,
                 gender: 'male',
-                description: 'Білий заєць',
+                description: 'Біла рись',
             });
             await testRabbit.save();
 
-            // Виконуємо GET-запит для отримання всіх записів зайців
+            // Виконуємо GET-запит для отримання всіх записів рисей
             const res = await chai.request(app).get('/api/rabbits');
             expect(res).to.have.status(200);
             expect(res.body).to.be.an('array');
             expect(res.body.length).to.equal(1);
             expect(res.body[0]).to.have.property('name', 'Білан');
             expect(res.body[0]).to.have.property('gender', 'male');
-            expect(res.body[0]).to.have.property('description', 'Білий заєць');
+            expect(res.body[0]).to.have.property('description', 'Біла рись');
             expect(res.body[0]).to.have.property('dateAdded');
             expect(new Date(res.body[0].dateAdded)).to.be.instanceOf(Date);
         });
     });
 
-    // Тести для отримання запису конкретного зайця за ID (GET-запит)
+    // Тести для отримання запису конкретної рисі за ID (GET-запит)
     describe('GET /api/rabbits/:id', () => {
-        it('має отримати конкретного зайця за id', async () => {
-            // Створюємо запис тестового зайця
+        it('має отримати конкретну рись за id', async () => {
+            // Створюємо запис тестової рисі
             const testRabbit = new Rabbit({
                 name: 'Косий',
                 age: 1,
                 height: 25,
                 weight: 1.8,
                 gender: 'male',
-                description: 'Коричневий заєць',
+                description: 'Коричнева рись',
             });
             const savedRabbit = await testRabbit.save();
 
-            // Виконуємо GET-запит для отримання запису зайця за ID
+            // Виконуємо GET-запит для отримання запису рисі за ID
             const res = await chai.request(app).get(`/api/rabbits/${String(savedRabbit._id)}`);
             expect(res).to.have.status(200);
             expect(res.body).to.have.property('name', 'Косий');
@@ -143,22 +143,22 @@ describe('API вебдодатку сайту про зайців', () => {
             expect(res.body).to.have.property('height', 25);
             expect(res.body).to.have.property('weight', 1.8);
             expect(res.body).to.have.property('gender', 'male');
-            expect(res.body).to.have.property('description', 'Коричневий заєць');
+            expect(res.body).to.have.property('description', 'Коричнева рись');
         });
 
-        it('має повернути 404 для неіснуючого зайця', async () => {
-            // Виконуємо GET-запит для неіснуючого ID зайця
+        it('має повернути 404 для неіснуючої рисі', async () => {
+            // Виконуємо GET-запит для неіснуючого ID рисі
             const res = await chai.request(app).get('/api/rabbits/654321654321654321654321');
             expect(res).to.have.status(404);
         });
     });
 
-    // Тести для повного оновлення запису про зайця (PUT-запит)
+    // Тести для повного оновлення запису про рись (PUT-запит)
     describe('PUT /api/rabbits/:id', () => {
-        it('має повністю оновити запис про зайця', async () => {
-            // Створюємо тестового зайця
+        it('має повністю оновити запис про рись', async () => {
+            // Створюємо тестову рись
             const testRabbit = new Rabbit({
-                name: 'Оригінальний',
+                name: 'Оригінальна',
                 age: 1,
                 height: 25,
                 weight: 1.8,
@@ -167,9 +167,9 @@ describe('API вебдодатку сайту про зайців', () => {
             });
             const savedRabbit = await testRabbit.save();
 
-            // Дані для оновлення зайця
+            // Дані для оновлення рисі
             const updatedData = {
-                name: 'Оновлений',
+                name: 'Оновлена',
                 age: 2,
                 height: 30,
                 weight: 2.5,
@@ -177,7 +177,7 @@ describe('API вебдодатку сайту про зайців', () => {
                 description: 'Оновлений опис',
             };
 
-            // Виконуємо PUT-запит для повного оновлення запису про зайця
+            // Виконуємо PUT-запит для повного оновлення запису про рись
             const res = await chai
                 .request(app)
                 .put(`/api/rabbits/${String(savedRabbit._id)}`)
@@ -185,7 +185,7 @@ describe('API вебдодатку сайту про зайців', () => {
 
             // Перевіряємо результат
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('name', 'Оновлений');
+            expect(res.body).to.have.property('name', 'Оновлена');
             expect(res.body).to.have.property('age', 2);
             expect(res.body).to.have.property('height', 30);
             expect(res.body).to.have.property('weight', 2.5);
@@ -196,9 +196,9 @@ describe('API вебдодатку сайту про зайців', () => {
         });
 
         it("має завершитися невдачею при відсутності обов'язкових полів", async () => {
-            // Створюємо тестового зайця
+            // Створюємо тестову рись
             const testRabbit = new Rabbit({
-                name: 'Оригінальний',
+                name: 'Оригінальна',
                 age: 1,
                 height: 25,
                 weight: 1.8,
@@ -209,7 +209,7 @@ describe('API вебдодатку сайту про зайців', () => {
 
             // Неповні дані для оновлення (відсутні обов'язкові поля)
             const incompleteData = {
-                name: 'Оновлений',
+                name: 'Оновлена',
                 age: 2,
                 // height і weight відсутні
                 gender: 'female',
@@ -225,20 +225,20 @@ describe('API вебдодатку сайту про зайців', () => {
             // Перевіряємо, що запит завершився з помилкою
             expect(res).to.have.status(400);
 
-            // Перевіряємо, що заєць не змінився
+            // Перевіряємо, що рись не змінилася
             const unchangedRabbit = await Rabbit.findById(savedRabbit._id);
-            expect(unchangedRabbit).to.have.property('name', 'Оригінальний');
+            expect(unchangedRabbit).to.have.property('name', 'Оригінальна');
             expect(unchangedRabbit).to.have.property('height', 25);
             expect(unchangedRabbit).to.have.property('weight', 1.8);
         });
     });
 
-    // Тести для часткового оновлення запису про зайця (PATCH-запит)
+    // Тести для часткового оновлення запису про рись (PATCH-запит)
     describe('PATCH /api/rabbits/:id', () => {
-        it('має частково оновити запис про зайця', async () => {
-            // Створюємо тестового зайця
+        it('має частково оновити запис про рись', async () => {
+            // Створюємо тестову рись
             const testRabbit = new Rabbit({
-                name: 'Оригінальний',
+                name: 'Оригінальна',
                 age: 1,
                 height: 25,
                 weight: 1.8,
@@ -249,7 +249,7 @@ describe('API вебдодатку сайту про зайців', () => {
 
             // Дані для часткового оновлення
             const patchData = {
-                name: 'Частково оновлений',
+                name: 'Частково оновлена',
                 age: 3,
                 description: 'Оновлений опис',
             };
@@ -262,7 +262,7 @@ describe('API вебдодатку сайту про зайців', () => {
 
             // Перевіряємо результат
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('name', 'Частково оновлений');
+            expect(res.body).to.have.property('name', 'Частково оновлена');
             expect(res.body).to.have.property('age', 3);
             expect(res.body).to.have.property('height', 25);
             expect(res.body).to.have.property('weight', 1.8);
@@ -273,9 +273,9 @@ describe('API вебдодатку сайту про зайців', () => {
         });
 
         it('демонструє різницю між PATCH і PUT з частковими оновленнями', async () => {
-            // Створюємо тестового зайця
+            // Створюємо тестову рись
             const testRabbit = new Rabbit({
-                name: 'Оригінальний',
+                name: 'Оригінальна',
                 age: 1,
                 height: 25,
                 weight: 1.8,
@@ -286,7 +286,7 @@ describe('API вебдодатку сайту про зайців', () => {
 
             // Ті самі неповні дані, що не спрацювали з PUT, мають працювати з PATCH
             const partialData = {
-                name: 'Оновлений',
+                name: 'Оновлена',
                 age: 2,
                 // height і weight навмисно відсутні
                 gender: 'female',
@@ -301,7 +301,7 @@ describe('API вебдодатку сайту про зайців', () => {
 
             // Перевіряємо результат
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('name', 'Оновлений');
+            expect(res.body).to.have.property('name', 'Оновлена');
             expect(res.body).to.have.property('age', 2);
             // Ці поля мають зберегти свої початкові значення
             expect(res.body).to.have.property('height', 25);
@@ -337,26 +337,26 @@ describe('API вебдодатку сайту про зайців', () => {
         });
     });
 
-    // Тести для видалення запису зайця (DELETE-запит)
+    // Тести для видалення запису рисі (DELETE-запит)
     describe('DELETE /api/rabbits/:id', () => {
-        it('має видалити запис про зайця', async () => {
-            // Створюємо тестового зайця
+        it('має видалити запис про рись', async () => {
+            // Створюємо тестову рись
             const testRabbit = new Rabbit({
                 name: 'Стрибунець',
                 age: 2,
                 height: 28,
                 weight: 2.1,
                 gender: 'female',
-                description: 'Чорний заєць',
+                description: 'Чорна рись',
             });
             const savedRabbit = await testRabbit.save();
 
             // Виконуємо DELETE-запит
             const res = await chai.request(app).delete(`/api/rabbits/${String(savedRabbit._id)}`);
             expect(res).to.have.status(200);
-            expect(res.body).to.have.property('message', 'Запис про зайця видалено');
+            expect(res.body).to.have.property('message', 'Запис про рись видалено');
 
-            // Перевіряємо, що запис про зайця дійсно видалено з бази
+            // Перевіряємо, що запис про рись дійсно видалено з бази
             const findRabbit = await Rabbit.findById(savedRabbit._id);
             expect(findRabbit).to.be.null;
         });
