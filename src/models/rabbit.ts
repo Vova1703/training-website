@@ -42,5 +42,6 @@ const rabbitSchema = new Schema<IRabbit>({
 });
 
 // Створення моделі Mongoose на основі схеми
+// ...existing code...
 export const Rabbit = model<IRabbit>('Rabbit', rabbitSchema);
 export type { IRabbit }; // Експортуємо інтерфейс для використання в інших файлах
