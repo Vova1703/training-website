@@ -11,7 +11,7 @@ import type { IConfig } from './config/container';
 import { swaggerSpec } from './config/swagger';
 
 // Створюємо екземпляр Express-додатку
-const app = express();
+const app: express.Application = express();
 
 // Підключаємо проміжне програмне забезпечення (middleware)
 app.use(cors()); // Дозволяє крос-доменні запити
@@ -58,7 +58,7 @@ if (require.main === module) {
                 );
             });
         })
-        .catch(err => {
+        .catch((err: unknown) => {
             // Обробка помилок підключення до бази даних
             console.error('Не вдалося підключитися до бази даних:', err);
             process.exit(1);

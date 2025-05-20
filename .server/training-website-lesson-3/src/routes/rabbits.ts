@@ -1,118 +1,96 @@
 import { Router, Request, Response } from 'express';
 import { container } from '../config/container';
-import { RabbitRepository } from '../repositories/RabbitRepository';
+import { LynxRepository } from '../repositories/RabbitRepository';
 
-// Створюємо новий обробник HTTP-запитів Express
-const router = Router();
-// Отримуємо екземпляр репозиторію зайців з контейнера інверсії залежностей
-const rabbitRepository = container.get(RabbitRepository);
+const router: import('express').Router = Router();
+// Отримуємо екземпляр репозиторію рисей з контейнера інверсії залежностей
+const lynxRepository: LynxRepository = container.get<LynxRepository>(LynxRepository);
 
-// Обробка HTTP-запиту GET / - отримання всіх записів зайців
+// Обробка HTTP-запиту GET / - отримання всіх записів рисей
 router.get('/', (async (_req: Request, res: Response) => {
     try {
-        // Отримуємо всі записи зайців з бази даних через репозиторій
-        const rabbits = await rabbitRepository.findAll();
-        res.json(rabbits);
+        // Отримуємо всі записи рисей з бази даних через репозиторій
+        const lynxes = await lynxRepository.findAll();
+        res.json(lynxes);
     } catch (error) {
-        // Обробка помилки
         const errorMessage = error instanceof Error ? error.message : 'Виникла невідома помилка';
         res.status(500).json({ message: errorMessage });
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту GET /:id - отримання запису одного зайця за ідентифікатором
+// Обробка HTTP-запиту GET /:id - отримання запису однієї рисі за ідентифікатором
 router.get('/:id', (async (req: Request, res: Response) => {
     try {
-        // Пошук зайця за ідентифікатором
-        const rabbit = await rabbitRepository.findById(req.params.id);
-        if (rabbit) {
-            res.json(rabbit);
+        const lynx = await lynxRepository.findById(req.params.id);
+        if (lynx) {
+            res.json(lynx);
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            res.status(404).json({ message: 'Запис зайця не знайдено' });
+            res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
-        // Обробка помилки
         const errorMessage = error instanceof Error ? error.message : 'Виникла невідома помилка';
         res.status(500).json({ message: errorMessage });
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту POST / - створення нового запису зайця
+// Обробка HTTP-запиту POST / - створення нового запису рисі
 router.post('/', (async (req: Request, res: Response) => {
     try {
-        // Створюємо новий запис зайця з даних запиту
-        const newRabbit = await rabbitRepository.create(req.body);
-        // Повертаємо статус 201 (Created) і дані створеного зайця
-        res.status(201).json(newRabbit);
+        const newLynx = await lynxRepository.create(req.body);
+        res.status(201).json(newLynx);
     } catch (error) {
-        // Обробка помилки
         const errorMessage = error instanceof Error ? error.message : 'Виникла невідома помилка';
         res.status(400).json({ message: errorMessage });
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту PUT /:id - повне оновлення запису зайця
+// Обробка HTTP-запиту PUT /:id - повне оновлення запису рисі
 router.put('/:id', (async (req: Request, res: Response) => {
     try {
-        // Перевірка наявності всіх обов'язкових полів для PUT запиту
         const requiredFields = ['name', 'age', 'height', 'weight', 'gender'];
         const missingFields = requiredFields.filter(field => !(field in req.body));
-
-        // Якщо є відсутні поля, повертаємо помилку 400 Bad Request
         if (missingFields.length > 0) {
             return res.status(400).json({
                 message: `Відсутні обов'язкові поля: ${missingFields.join(', ')}`,
             });
         }
-
-        // Оновлюємо зайця з вказаним ID
-        const rabbit = await rabbitRepository.update(req.params.id, req.body);
-        if (rabbit) {
-            return res.json(rabbit);
+        const lynx = await lynxRepository.update(req.params.id, req.body);
+        if (lynx) {
+            return res.json(lynx);
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            return res.status(404).json({ message: 'Запис зайця не знайдено' });
+            return res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
-        // Обробка помилки
         const errorMessage = error instanceof Error ? error.message : 'Виникла невідома помилка';
         return res.status(400).json({ message: errorMessage });
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту PATCH /:id - часткове оновлення запису зайця
+// Обробка HTTP-запиту PATCH /:id - часткове оновлення запису рисі
 router.patch('/:id', (async (req: Request, res: Response) => {
     try {
-        // Часткове оновлення запису зайця - передаються лише ті поля, які потрібно змінити
-        const rabbit = await rabbitRepository.patch(req.params.id, req.body);
-        if (rabbit) {
-            res.json(rabbit);
+        const lynx = await lynxRepository.patch(req.params.id, req.body);
+        if (lynx) {
+            res.json(lynx);
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            res.status(404).json({ message: 'Запис зайця не знайдено' });
+            res.status(404).json({ message: 'Запис рисі не знайдено' });
         }
     } catch (error) {
-        // Обробка помилки
         const errorMessage = error instanceof Error ? error.message : 'Виникла невідома помилка';
         res.status(400).json({ message: errorMessage });
     }
 }) as unknown as (req: Request, res: Response) => void);
 
-// Обробка HTTP-запиту DELETE /:id - видалення запису зайця
+// Обробка HTTP-запиту DELETE /:id - видалення запису рисі
 router.delete('/:id', (async (req: Request, res: Response) => {
     try {
-        // Видаляємо дані про зайця за ID
-        const rabbit = await rabbitRepository.delete(req.params.id);
-        if (rabbit) {
-            // У разі успіху повертаємо повідомлення про видалення
-            res.json({ message: 'Запис про зайця видалено' });
+        const lynx = await lynxRepository.delete(req.params.id);
+        if (lynx) {
+            res.json({ message: 'Запис про рись видалено' });
         } else {
-            // Якщо заєць не знайдений, повертаємо 404 помилку
-            res.status(404).json({ message: 'Запис про зайця не знайдено' });
+            res.status(404).json({ message: 'Запис про рись не знайдено' });
         }
     } catch (error) {
-        // Обробка помилки
         const errorMessage = error instanceof Error ? error.message : 'Виникла невідома помилка';
         res.status(500).json({ message: errorMessage });
     }

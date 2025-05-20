@@ -13,7 +13,7 @@ const API_BASE_URL = (() => {
   }
   
   // Default to localhost for local development
-  return 'http://localhost:5000/api';
+  return 'http://localhost:3000/api';
 })();
 
 export { API_BASE_URL };

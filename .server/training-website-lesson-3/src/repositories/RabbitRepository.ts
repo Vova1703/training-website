@@ -1,39 +1,30 @@
 import { injectable } from 'inversify';
-import { Rabbit, IRabbit } from '../models/rabbit';
+// Перевірте, як саме називається файл у папці models:
+// Якщо файл називається Lynx.ts:
+import { Lynx, ILynx } from '../models/Lynx';
+// Якщо файл називається lynx.ts, залиште так:
+/// import { Lynx, ILynx } from '../models/lynx';
 
-// Клас-репозиторій для роботи з зайцями
-// Анотація injectable дозволяє впровадити цей репозиторій через IoC контейнер
 @injectable()
-export class RabbitRepository {
-    // Метод для отримання всіх зайців з бази даних
-    public async findAll(): Promise<IRabbit[]> {
-        return Rabbit.find();
+export class LynxRepository {
+    public async findAll(): Promise<ILynx[]> {
+        return Lynx.find();
     }
-
-    // Метод для пошуку зайця за унікальним ідентифікатором
-    public async findById(id: string): Promise<IRabbit | null> {
-        return Rabbit.findById(id);
+    public async findById(id: string): Promise<ILynx | null> {
+        return Lynx.findById(id);
     }
-
-    // Метод для створення нового зайця в базі даних
-    public async create(rabbitData: IRabbit): Promise<IRabbit> {
-        const rabbit = new Rabbit(rabbitData);
-        return rabbit.save();
+    public async create(lynxData: ILynx): Promise<ILynx> {
+        const lynx = new Lynx(lynxData);
+        return lynx.save();
     }
-
-    // Метод для видалення зайця за ідентифікатором
     public async delete(id: string): Promise<boolean> {
-        const result = await Rabbit.findByIdAndDelete(id);
+        const result = await Lynx.findByIdAndDelete(id);
         return result !== null;
     }
-
-    // Метод для повного оновлення даних про зайця (заміна всіх полів)
-    public async update(id: string, rabbitData: IRabbit): Promise<IRabbit | null> {
-        return Rabbit.findByIdAndUpdate(id, rabbitData, { new: true });
+    public async update(id: string, lynxData: ILynx): Promise<ILynx | null> {
+        return Lynx.findByIdAndUpdate(id, lynxData, { new: true });
     }
-
-    // Метод для часткового оновлення даних про зайця (оновлення лише вказаних полів)
-    public async patch(id: string, rabbitData: Partial<IRabbit>): Promise<IRabbit | null> {
-        return Rabbit.findByIdAndUpdate(id, { $set: rabbitData }, { new: true });
+    public async patch(id: string, lynxData: Partial<ILynx>): Promise<ILynx | null> {
+        return Lynx.findByIdAndUpdate(id, { $set: lynxData }, { new: true });
     }
 }
