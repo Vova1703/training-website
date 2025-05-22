@@ -5,15 +5,30 @@ import type { IConfig } from '../config/container';
 import { MONGODB_URI } from '../config/env';
 
 // Клас для роботи з базою даних MongoDB
+// Використовується для зберігання інформації про рись (Lynx), зокрема кількість малят у виводку
 // Позначений як injectable для використання в IoC контейнері
 @injectable()
 export class MongoDatabase implements IDatabase {
     private _isConnected = false; // стан підключення
     private _connectionUri: string | null = null; // URI-адреса поточного підключення
+    /**
+     * Кількість малят у виводку рисі
+     */
+    private _litterSize: number | null = null; // кількість малят у виводку
 
     // Конструктор з впровадженням залежності конфігурації
     constructor(@inject('Config') private config: IConfig) {
         mongoose.set('strictQuery', true);
+    }
+
+    // Геттер для litterSize
+    public get litterSize(): number | null {
+        return this._litterSize;
+    }
+
+    // Сеттер для litterSize
+    public set litterSize(size: number | null) {
+        this._litterSize = size;
     }
 
     // Метод для підключення до бази даних
